@@ -70,16 +70,47 @@ def getgemvalues(finalgemlist, listindex, numberofgems=None, numberofgemtype=Non
     return numberofgems, numberofgemtype
 
 
-workingList = getgemvalues(finalGemList, 3)
+"""Now lets grab our data from the spreadsheet"""
+
+
+def readgems(rowrange=None, numberofgemtype=0, gemnumber=0):
+    print("This is the gem number " + str(gemnumber))
+    print("This is the number of gems of that type " + str(numberofgemtype))
+    print("\n")
+
+    if numberofgemtype > 1:
+        for col in ws.iter_cols(min_row=3+gemnumber, min_col=16, max_row=3+gemnumber, max_col=16):
+            for cell in col:
+                counter = 0
+                while counter < numberofgemtype:
+                    lootList.append(cell.value)
+                    counter += 1
+
+    if numberofgemtype == 1:
+        for col in ws.iter_cols(min_row=3+gemnumber, min_col=16, max_row=3+gemnumber, max_col=16):
+            for cell in col:
+                lootList.append(cell.value)
+
+    return  lootList
+
+
+workingList = getgemvalues(finalGemList, -1)
 
 numberOfGems = workingList[0]
 numberOfGemType = workingList[1]
+numberOfGemType = int(numberOfGemType)
+numberOfGems = int(numberOfGems)
 
 print(numberOfGemType)
 print(numberOfGems)
 
-"""Now lets grab our data from the spreadsheet"""
+readgems(row_range, numberOfGems, numberOfGemType)
+print(lootList)
 
-def readgems():
-    for row in ws.iter_rows(min_row=4, max_row=4+row_range, max_col=14)
+lootList = str(lootList)
 
+result = ws['h42']
+result.value = lootList
+
+#wb.save("C:\\Users\\samue\\PycharmProjects\\dndlootgenerator\\dndloot.xlsx")
+print("saved")
